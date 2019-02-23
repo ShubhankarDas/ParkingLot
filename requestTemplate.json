@@ -1,13 +1,56 @@
 {
-  "park": {
+  "PARK": {
     "arguments" : [
       {
-        "type": "String"
+        "regex": {
+          "pattern": "^([a-zA-Z]{2}-[0-9]{2}-[a-zA-Z]{2}-[0-9]{4})$",
+          "flags": "i"
+        }
       },
       {
-        "type": "Number"
+        "regex": {
+          "pattern": "[a-zA-Z]",
+          "flags": "gm"
+        }
       }
     ],
-    "default_example": ""
+    "default_example": "Invalid arguments. PARK {Registration Number} {Car Color} Example - PARK KA-01-HH-1234 BLUE"
+  },
+  "LEAVE": {
+    "arguments": [{
+        "regex": {
+          "pattern": "[0-9]",
+          "flags": "gm"
+        }
+      }
+    ],
+    "default_example": "Invalid arguments. LEAVE {slot number} Example - LEAVE 3"
+  },
+  "SLOT_NUMBERS_FOR_CARS_WITH_COLOR": {
+    "arguments": [{
+      "regex": {
+        "pattern": "[a-zA-Z]",
+        "flags": "gm"
+      }
+    }],
+    "default_example": "Invalid arguments. SLOT_NUMBERS_FOR_CARS_WITH_COLOR {Color name} Example - SLOT_NUMBERS_FOR_CARS_WITH_COLOR WHITE"
+  },
+  "REGISTRATION_NUMBER_FOR_CARS_WITH_COLOR": {
+    "arguments": [{
+      "regex": {
+        "pattern": "[a-zA-Z]",
+        "flags": "gm"
+      }
+    }],
+    "default_example": "Invalid arguments. REGISTRATION_NUMBER_FOR_CARS_WITH_COLOR {Color name} Example - REGISTRATION_NUMBER_FOR_CARS_WITH_COLOR WHITE"
+  },
+  "SLOT_NUMBER_FOR_REGISTRATION_NUMBER": {
+    "arguments": [{
+      "regex": {
+        "pattern": "[a-zA-Z]{2}-[0-9]{2}-[a-zA-Z]{2}-[0-9]{4}",
+        "flags": "g"
+      }
+    }],
+    "default_example": "Invalid arguments. SLOT_NUMBER_FOR_REGISTRATION_NUMBER {Registration Number} Example - SLOT_NUMBER_FOR_REGISTRATION_NUMBER KA-01-HH-1234"
   }
 }

@@ -9,7 +9,7 @@ const init = () =>{
   parkingLot = new ParkingLotModel(8)
 }
 
-const start = () =>{
+const start = () => {
   // Get process.stdin as the standard input object.
   const standard_input = process.stdin;
   const standard_output = process.stdout;
@@ -17,7 +17,6 @@ const start = () =>{
   standard_input.setEncoding('utf-8');
 
   // Prompt user to input data in console.
-  console.log("Welcome to Auto Park!");
   standard_output.write("> ")
 
   // When user input data and click enter key.
@@ -37,22 +36,32 @@ const start = () =>{
 const orchestrate = (args) => {
   switch (args[0].toUpperCase()) {
     case 'PARK':
-      park(args[1], args[2])
+      if(validation(args)){
+        park(args[1], args[2])
+      }
       break
     case 'STATUS':
       status()
       break
     case 'LEAVE':
-      leave(args[1])
+      if (validation(args)) {
+        leave(args[1])
+      }
       break
     case 'SLOT_NUMBERS_FOR_CARS_WITH_COLOR':
-      slotNumbersByCarColor(args[1])
+      if (validation(args)) {
+        slotNumbersByCarColor(args[1])
+      }
       break
     case 'REGISTRATION_NUMBER_FOR_CARS_WITH_COLOR':
-      registrationNumberByColor(args[1])
+      if (validation(args)) {
+        registrationNumberByColor(args[1])
+      }
       break
     case 'SLOT_NUMBER_FOR_REGISTRATION_NUMBER':
-      slotNumberByRegistrationNumber(args[1])
+      if (validation(args)) {
+        slotNumberByRegistrationNumber(args[1])
+      }
       break
     default:
       console.log("It should be either of the following.")
@@ -75,8 +84,26 @@ const registrationNumberByColor = (color) =>
 
 const leave = (slotNumber) => parkingLot.leave(parseInt(slotNumber))
 
-const validation = () =>{
-  // use request template
+const validation = (args) => {
+  let template = requestTemplate[args[0].toUpperCase()]
+
+  if(args.length > template.arguments.length){
+    let length = template.arguments.length
+
+    for( let i = 1; i <= length ; i++){
+      let regString = template.arguments[i - 1].regex
+
+      let regEx = new RegExp(regString.pattern, regString.flags)
+
+      if (!args[i].match(regEx)){
+        console.log(template.default_example)
+        return false
+      }
+    }
+    return true
+  }
+  console.log(template.default_example)
+  return false
 }
 
 init()

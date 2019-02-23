@@ -7,16 +7,18 @@ class ParkingLot {
     this.colorMap = new Map()
     this.carMap = new Map()
     this.slotMap = new Map()
+
+    console.log(`Created a parking lot with ${totalSlots} slots`)
   }
 
   park(newCar) {
     // get next slot
-    const newSlot = getNextAvailableSlot(this)
+    const newSlot = this._getNextAvailableSlot()
     if (newSlot) {
 
       // Update Color mapping
       let colorCarsArray = []
-      if (this.colorMap[newCar.carColor] || this.colorMap[newCar.carColor] instanceof Array) {
+      if (this.colorMap.get(newCar.carColor) && this.colorMap.get(newCar.carColor) instanceof Array) {
         colorCarsArray = this.colorMap.get(newCar.carColor)
       }
 
@@ -51,6 +53,9 @@ class ParkingLot {
 
   leave(slotNumber){
     let car = this.slotMap.get(parseInt(slotNumber))
+    if(!car){
+      return console.log('Not Found')
+    }
     this.carMap.delete(car.registrationNumber)
     let sameColorCars = this.colorMap.get(car.carColor)
 
@@ -67,11 +72,11 @@ class ParkingLot {
 
     this.nearestAvailableSlots.sort()
 
-    console.log(`${slotNumber} is now empty.`)
+    console.log(`Slot number ${slotNumber} is free`)
   }
 
   slotNumberByRegistrationNumber(registrationNumber) {
-    let slotNumber = (this.carMap[registrationNumber])
+    let slotNumber = (this.carMap.get(registrationNumber))
 
     if (slotNumber) {
       return console.log(slotNumber)
@@ -80,7 +85,7 @@ class ParkingLot {
   }
 
   registrationNumberByColor(color){
-    let cars = (this.colorMap[color])
+    let cars = (this.colorMap.get(color))
 
     if (cars && cars.length > 0) {
 
@@ -97,38 +102,33 @@ class ParkingLot {
   }
 
   slotNumbersByCarColor(color) {
-    let cars = (this.colorMap[color])
+    let cars = (this.colorMap.get(color))
     if(cars && cars.length > 0) {
 
       const slotNos = []
 
       cars.forEach(car=>{
 
-        slotNos.push(this.carMap[car.registrationNumber])
+        slotNos.push(this.carMap.get(car.registrationNumber))
 
       })
       return console.log(slotNos.toString())
     }
     console.log('Not Found')
   }
-}
 
-// TODO: refine this
-const getNextAvailableSlot = ({
-    nearestAvailableSlots,
-    totalSlots,
-    lastCarParkedSlot
-  }) => {
-  // If parking has any freed up slots
-  if (nearestAvailableSlots.length > 0) {
-    return nearestAvailableSlots.pop()
+  _getNextAvailableSlot() {
+    // If parking has any freed up slots
+    if (this.nearestAvailableSlots.length > 0) {
+      return this.nearestAvailableSlots.pop()
+    }
+
+    if (this.totalSlots != this.lastCarParkedSlot) {
+      return this.lastCarParkedSlot + 1
+    }
+
+    return null
   }
-
-  if (totalSlots != lastCarParkedSlot) {
-    return lastCarParkedSlot + 1
-  }
-
-  return null
 }
 
 module.exports = ParkingLot
@@ -139,4 +139,5 @@ park KA-01-HH-1222 White
 park KA-01-HH-1122 White
 SLOT_NUMBERS_FOR_CARS_WITH_COLOR
 SLOT_NUMBER_FOR_REGISTRATION_NUMBER
+REGISTRATION_NUMBER_FOR_CARS_WITH_COLOR
 */
