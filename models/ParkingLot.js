@@ -63,7 +63,9 @@ class ParkingLot {
 
     this.slotMap.delete(slotNumber)
 
-    console.log(this.slotMap, this.colorMap, this.carMap)
+    this.nearestAvailableSlots.push(slotNumber)
+
+    this.nearestAvailableSlots.sort()
 
     console.log(`${slotNumber} is now empty.`)
   }
