@@ -42,6 +42,9 @@ const orchestrate = (args) => {
     case 'STATUS':
       status()
       break
+    case 'LEAVE':
+      leave(args[1])
+      break
     case 'SLOT_NUMBERS_FOR_CARS_WITH_COLOR':
       slotNumbersByCarColor(args[1])
       break
@@ -57,14 +60,10 @@ const orchestrate = (args) => {
   }
 }
 
-const park = (registrationNumber, carColor) => {
-  // Add a car
+const park = (registrationNumber, carColor) =>
   parkingLot.park(new CarModel(registrationNumber, carColor))
-}
 
-const status = () => {
-  parkingLot.status()
-}
+const status = () => parkingLot.status()
 
 const slotNumbersByCarColor = (color) =>
   parkingLot.slotNumbersByCarColor(color.toUpperCase())
@@ -73,6 +72,8 @@ const slotNumbersByCarColor = (color) =>
 
 const registrationNumberByColor = (color) =>
   parkingLot.registrationNumberByColor(color.toUpperCase())
+
+const leave = (slotNumber) => parkingLot.leave(parseInt(slotNumber))
 
 const validation = () =>{
   // use request template

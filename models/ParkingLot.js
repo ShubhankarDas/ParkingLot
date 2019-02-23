@@ -3,10 +3,10 @@ class ParkingLot {
   constructor(totalSlots){
     this.totalSlots = totalSlots
     this.lastCarParkedSlot = 0
-    this.nearestAvailableSlots = []
-    this.colorMap = {}
-    this.carMap = {}
-    this.slotMap = {}
+    this.nearestAvailableSlots = new Array()
+    this.colorMap = new Map()
+    this.carMap = new Map()
+    this.slotMap = new Map()
   }
 
   park(newCar) {
@@ -15,16 +15,21 @@ class ParkingLot {
     if (newSlot) {
 
       // Update Color mapping
-      if (!this.colorMap[newCar.carColor] || !this.colorMap[newCar.carColor] instanceof Array) {
-        this.colorMap[newCar.carColor] = []
+      let colorCarsArray = []
+      if (this.colorMap[newCar.carColor] || this.colorMap[newCar.carColor] instanceof Array) {
+        colorCarsArray = this.colorMap.get(newCar.carColor)
       }
-      this.colorMap[newCar.carColor].push(newCar)
+
+      colorCarsArray.push(newCar)
+
+      // update Color map
+      this.colorMap.set(newCar.carColor, colorCarsArray)
 
       // update Car Map
-      this.carMap[newCar.registrationNumber] = newSlot
+      this.carMap.set(newCar.registrationNumber,newSlot)
 
       // Update Parking lot slots
-      this.slotMap[newSlot] = newCar
+      this.slotMap.set(newSlot, newCar)
 
       this.lastCarParkedSlot++
 
@@ -35,19 +40,32 @@ class ParkingLot {
     }
   }
 
+  // search for another way to print
   status(){
     console.log(`${'Slot No.'.padEnd(7)} ${'Registration No.'} ${'Colour'}`)
-      Object.keys(this.slotMap).forEach(slotNo => {
 
-        let car = this.slotMap[slotNo]
-
-        console.log(`${slotNo.padEnd(10 - (slotNo.length))}${car.registrationNumber.padEnd(30 - (car.registrationNumber.length))}${car.carColor}`)
-
-      })
+    this.slotMap.forEach((car, slotNo) => {
+      console.log(`${slotNo.toString().padEnd(10 - (slotNo.toString().length))}${car.registrationNumber.padEnd(30 - (car.registrationNumber.length))}${car.carColor}`)
+    })
   }
 
   leave(slotNumber){
+    let car = this.slotMap.get(parseInt(slotNumber))
+    this.carMap.delete(car.registrationNumber)
+    let sameColorCars = this.colorMap.get(car.carColor)
 
+    if (sameColorCars.length === 1){
+      this.colorMap.delete(car.carColor)
+    }else{
+      let index = sameColorCars.indexOf(car);
+      if (index !== -1) sameColorCars.splice(index, 1);
+    }
+
+    this.slotMap.delete(slotNumber)
+
+    console.log(this.slotMap, this.colorMap, this.carMap)
+
+    console.log(`${slotNumber} is now empty.`)
   }
 
   slotNumberByRegistrationNumber(registrationNumber) {

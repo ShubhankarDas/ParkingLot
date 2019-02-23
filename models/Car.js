@@ -1,8 +1,12 @@
 class Car{
   constructor(registrationNumber, carColor){
-    this.registrationNumber = registrationNumber.toUpperCase()
-    this.carColor = carColor.toUpperCase()
+    this._registrationNumber = registrationNumber.toUpperCase()
+    this._carColor = carColor.toUpperCase()
   }
+
+  get registrationNumber(){return this._registrationNumber}
+
+  get carColor(){return this._carColor}
 }
 
 module.exports = Car
