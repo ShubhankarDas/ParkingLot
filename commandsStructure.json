@@ -1,4 +1,13 @@
 {
+  "CREATE_PARKING_LOT": {
+    "arguments": [{
+      "regex": {
+        "pattern": "[0-9]",
+        "flags": "gm"
+      }
+    }],
+    "default_example": "Invalid arguments. CREATE_PARKING_LOT {Number of Slots} Example - CREATE_PARKING_LOT 3"
+  },
   "PARK": {
     "arguments" : [
       {

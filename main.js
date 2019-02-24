@@ -1,15 +1,15 @@
 const ParkingLotModel = require('./models/ParkingLot')
 const CarModel = require('./models/Car')
-const requestTemplate = require('./requestTemplate')
+const requestTemplate = require('./commandsStructure.json')
+const fs = require('fs')
 
 let parkingLot;
 
-const init = () =>{
-  console.log('Initializing...')
-  parkingLot = new ParkingLotModel(8)
+const createParkingLot = (size) => {
+  parkingLot = new ParkingLotModel(size)
 }
 
-const start = () => {
+const startCLI = () => {
   // Get process.stdin as the standard input object.
   const standard_input = process.stdin;
   const standard_output = process.stdout;
@@ -24,17 +24,24 @@ const start = () => {
     // User input exit.
     if (data === 'exit\n') {
       // Program exit.
-      console.log("Hope you liked it. :)  ");
+      console.log("Hope you liked it. :)");
       process.exit();
     } else {
-      orchestrate(data.trim().split(/\s+/g))
+      orchestrate(data)
     }
     standard_output.write("> ")
   });
 }
 
-const orchestrate = (args) => {
+const orchestrate = (input) => {
+  const args = input.trim().split(/\s+/g)
+
   switch (args[0].toUpperCase()) {
+    case 'CREATE_PARKING_LOT':
+      if (validation(args)) {
+        createParkingLot(args[1])
+      }
+      break
     case 'PARK':
       if(validation(args)){
         park(args[1], args[2])
@@ -64,7 +71,7 @@ const orchestrate = (args) => {
       }
       break
     default:
-      console.log("It should be either of the following.")
+      console.log(`Unknown Command. Available - ${Object.keys(requestTemplate)}`)
       break
   }
 }
@@ -106,5 +113,14 @@ const validation = (args) => {
   return false
 }
 
-init()
-start()
+const readFromFile = () =>{
+  let commands = fs.readFileSync('temp.txt').toString().split("\n")
+
+  commands.forEach(command =>{
+    orchestrate(command)
+  })
+}
+
+console.log(process.args)
+// startCLI()
+readFromFile()
