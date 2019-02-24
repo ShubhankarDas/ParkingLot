@@ -55,12 +55,12 @@ const orchestrate = (input) => {
         leave(args[1])
       }
       break
-    case 'SLOT_NUMBERS_FOR_CARS_WITH_COLOR':
+    case 'SLOT_NUMBERS_FOR_CARS_WITH_COLOUR':
       if (validation(args)) {
         slotNumbersByCarColor(args[1])
       }
       break
-    case 'REGISTRATION_NUMBER_FOR_CARS_WITH_COLOR':
+    case 'REGISTRATION_NUMBERS_FOR_CARS_WITH_COLOUR':
       if (validation(args)) {
         registrationNumberByColor(args[1])
       }
@@ -71,7 +71,8 @@ const orchestrate = (input) => {
       }
       break
     default:
-      console.log(`Unknown Command. Available - ${Object.keys(requestTemplate)}`)
+      console.log(`Unknown Command ${args[0]}
+      Available - ${Object.keys(requestTemplate)}`)
       break
   }
 }
@@ -113,14 +114,21 @@ const validation = (args) => {
   return false
 }
 
-const readFromFile = () =>{
-  let commands = fs.readFileSync('temp.txt').toString().split("\n")
+const readFromFile = (filename) =>{
+  try{
+    let commands = fs.readFileSync(filename).toString().split("\n")
 
-  commands.forEach(command =>{
-    orchestrate(command)
-  })
+    commands.forEach(command =>{
+      orchestrate(command)
+    })
+  }
+  catch(e){
+    console.log(e)
+  }
 }
 
-console.log(process.args)
-// startCLI()
-readFromFile()
+if (process.argv.length > 2){
+  readFromFile(process.argv[2])
+}else{
+  startCLI()
+}
