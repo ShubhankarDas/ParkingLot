@@ -7,8 +7,6 @@ class ParkingLot {
     this.colorMap = new Map()
     this.carMap = new Map()
     this.slotMap = new Map()
-
-    console.log(`Created a parking lot with ${totalSlots} slots`)
   }
 
   park(newCar) {
@@ -35,26 +33,19 @@ class ParkingLot {
 
       this.lastCarParkedSlot++
 
-      console.log(`Allocated slot number: ${newSlot}`)
+      return newSlot
 
-    } else {
-      console.log("Sorry, parking lot is full")
     }
   }
 
-  // search for another way to print
   status(){
-    console.log(`${'Slot No.'.padEnd(7)} ${'Registration No.'} ${'Colour'}`)
-
-    this.slotMap.forEach((car, slotNo) => {
-      console.log(`${slotNo.toString().padEnd(10 - (slotNo.toString().length))}${car.registrationNumber.padEnd(30 - (car.registrationNumber.length))}${car.carColor}`)
-    })
+    return this.slotMap
   }
 
   leave(slotNumber){
     let car = this.slotMap.get(parseInt(slotNumber))
     if(!car){
-      return console.log('Not Found')
+      return false
     }
     this.carMap.delete(car.registrationNumber)
     let sameColorCars = this.colorMap.get(car.carColor)
@@ -71,17 +62,11 @@ class ParkingLot {
     this.nearestAvailableSlots.push(slotNumber)
 
     this.nearestAvailableSlots.sort()
-
-    console.log(`Slot number ${slotNumber} is free`)
+    return true
   }
 
   slotNumberByRegistrationNumber(registrationNumber) {
-    let slotNumber = (this.carMap.get(registrationNumber))
-
-    if (slotNumber) {
-      return console.log(slotNumber)
-    }
-    console.log('Not Found')
+    return this.carMap.get(registrationNumber)
   }
 
   registrationNumberByColor(color){
@@ -96,9 +81,8 @@ class ParkingLot {
         registrationNos.push(car.registrationNumber)
 
       })
-      return console.log(registrationNos.toString())
+      return registrationNos
     }
-    console.log('Not Found')
   }
 
   slotNumbersByCarColor(color) {
@@ -112,9 +96,8 @@ class ParkingLot {
         slotNos.push(this.carMap.get(car.registrationNumber))
 
       })
-      return console.log(slotNos.toString())
+      return slotNos
     }
-    console.log('Not Found')
   }
 
   _getNextAvailableSlot() {
@@ -123,11 +106,9 @@ class ParkingLot {
       return this.nearestAvailableSlots.pop()
     }
 
-    if (this.totalSlots != this.lastCarParkedSlot) {
+    if (this.lastCarParkedSlot < this.totalSlots) {
       return this.lastCarParkedSlot + 1
     }
-
-    return null
   }
 }
 
