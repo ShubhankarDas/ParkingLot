@@ -15,6 +15,6 @@
   "scripts": {
     "test": "mocha tests"
   },
-  "author": "",
+  "author": "Shubhankar Das",
   "license": "ISC"
 }
