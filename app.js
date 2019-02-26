@@ -13,9 +13,6 @@ const startCLI = () => {
   // Set input character encoding.
   standard_input.setEncoding('utf-8');
 
-  // Prompt user to input data in console.
-  standard_output.write("> ")
-
   // When user input data and click enter key.
   standard_input.on('data', (data) => {
     // User input exit.
@@ -24,10 +21,8 @@ const startCLI = () => {
       process.exit();
     } else {
       // Handle the input
-      orchestrate(data)
+      data.split('\n').forEach(cmd => orchestrate(cmd))
     }
-    // Prompt user to input data in console.
-    standard_output.write("> ")
   });
 }
 
@@ -88,11 +83,11 @@ const orchestrate = (input) => {
         controller.slotNumberByRegistrationNumber(args[1])
       }
       break
-    default:
-      // if the command does not match print all the available commands
-      console.log(`Unknown Command ${args[0]}
-      Available - ${Object.keys(commandBlueprint)}`)
-      break
+    // default:
+    //   // if the command does not match print all the available commands
+    //   console.log(`Unknown Command ${args[0]}
+    //   Available - ${Object.keys(commandBlueprint)}`)
+    //   break
   }
 }
 

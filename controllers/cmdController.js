@@ -37,10 +37,13 @@ module.exports= {
     let cars = parkingLot.status()
     if(cars){
       // log the titles
-      console.log(`${'Slot No.'.padEnd(7)} ${'Registration No.'} ${'Colour'}`)
+      console.log(`${'Slot No.'}    ${'Registration No'}    ${'Colour'}`)
+      // console.log(`${'Slot No.'.padEnd(4)} ${'Registration No'.padEnd(4)} ${'Colour'}`)
+      // console.log(`${'Slot No.'.padEnd(4)}${'Registration No'.padEnd(4)}${'Colour'}`)
       // iterate cars and print out all the cars in a format
+
       cars.forEach((car, slotNo) => {
-        console.log(`${slotNo.toString().padEnd(10 - (slotNo.toString().length))}${car.registrationNumber.padEnd(30 - (car.registrationNumber.length))}${car.carColor}`)
+        console.log(`${slotNo.toString().padEnd(12)}${car.registrationNumber.padEnd(18)} ${car.carColor}`)
       })
     }
   },
@@ -50,9 +53,9 @@ module.exports= {
       return console.log(constants.PARKING_LOT_NOT_FOUND)
 
     // get the slot numbers
-    let slotNos = parkingLot.slotNumbersByCarColor(color.toUpperCase())
+    let slotNos = parkingLot.slotNumbersByCarColor(color)
 
-    console.log(slotNos ? slotNos.toString() : constants.NOT_FOUND)
+    console.log(slotNos ? slotNos.join(', ') : constants.NOT_FOUND)
   },
   slotNumberByRegistrationNumber(registrationNumber){
     // check if parking lot is present
@@ -68,9 +71,9 @@ module.exports= {
     if (!parkingLot) return console.log(constants.PARKING_LOT_NOT_FOUND)
 
     // get the registration numbers
-    let registrationNos = parkingLot.registrationNumberByColor(color.toUpperCase())
+    let registrationNos = parkingLot.registrationNumberByColor(color)
 
-    console.log(registrationNos ? registrationNos.toString() : constants.NOT_FOUND)
+    console.log(registrationNos ? registrationNos.join(', ') : constants.NOT_FOUND)
   },
   leave(slotNumber){
     // check if parking lot is present
