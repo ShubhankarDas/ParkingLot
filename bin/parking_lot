@@ -3,11 +3,11 @@
 # run, bin/parking_lot can be used to launch
 # it.
 
-dir=/Users/wingifysoftwarepvtltd/projects/parking_lot/app.js
+APPDIR=$(dirname $0)/../app.js
 
 if [ $1 ]
 then
-  node $dir $1
+  node $APPDIR $1
 else
-  node $dir
+  node $APPDIR
 fi

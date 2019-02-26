@@ -3,6 +3,9 @@
   "version": "1.0.0",
   "description": "",
   "main": "app.js",
+  "bin": {
+    "parking_lot": "./app.js"
+  },
   "directories": {
     "test": "tests"
   },
